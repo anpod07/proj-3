@@ -22,11 +22,28 @@ pipeline {
         sh 'docker build -t anpod07/nginx-test:latest .'
       }
     }
-    stage('PushToDockerImage') {
+    stage('TestAndPushDockerImage') {
       steps {
-        sh 'docker push anpod07/nginx-test:latest'
+        sh """
+          docker run -d --rm --name nginx-test -p 80:80 anpod07/nginx-test:latest
+          docker ps --no-trunc
+          http_health=$(curl -w '%{http_code}\n' --silent --output /dev/null localhost)
+          if [ $http_health -eq 200 ]
+           then
+            echo 'HTTP HEALTH PASSED'
+            docker push anpod07/nginx-test:latest
+           else
+            echo 'HTTP HEALTH FAILED'
+          fi
+          docker stop nginx-test
+        """
       }
     }
+//    stage('PushToDockerImage') {
+//      steps {
+//        sh 'docker push anpod07/nginx-test:latest'
+//      }
+//    }
   }
 }
 
