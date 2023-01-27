@@ -15,13 +15,23 @@ pipeline {
         cleanWs()
       }
     }
-    stage('GetCodeFromGitHub') {
+    stage('LoginToDockerHUB') {
       steps {
-        git branch: 'main', credentialsId: 'github-key', url: 'git@github.com:anpod07/proj-3.git'
-        sh '''
-          pwd
-          ls -la
-        '''
+        Credentials([usernamePassword(credentialsId: 'dockerhub_login', username: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          sh """
+            docker login -u $USERNAME -p $PASSWORD
+          """
+        }
+      }
+    }
+    stage('CreateDockerImage') {
+      steps {
+        sh 'docker build -t anpod07/nginx-test:latest .'
+      }
+    }
+    stage('PushDockerImage') {
+      steps {
+        sh 'docker push anpod07/nginx-test:latest'
       }
     }
   }
