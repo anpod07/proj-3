@@ -10,11 +10,6 @@ pipeline {
   }
 
   stages {
-    stage('CleanWorkspace') {
-      steps {
-        cleanWs()
-      }
-    }
     stage('LoginToDockerHUB') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub_login', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
@@ -27,7 +22,7 @@ pipeline {
         sh 'docker build -t anpod07/nginx-test:latest .'
       }
     }
-    stage('PushDockerImage') {
+    stage('PushToDockerImage') {
       steps {
         sh 'docker push anpod07/nginx-test:latest'
       }
