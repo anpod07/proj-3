@@ -27,9 +27,8 @@ pipeline {
         sh '''
           docker run -d --rm --name nginx-test -p 80:80 anpod07/nginx-test:latest
           docker ps --no-trunc
-          ss -ltn
           sleep 2
-          if [ -n `docker ps -f name=nginx-test | grep -v CONTAINER` ]
+          if [ -n `docker ps -q -f ancestor=anpod07/nginx-test` ]
            then
             echo 'HTTP HEALTH PASSED'
             docker push anpod07/nginx-test:latest
