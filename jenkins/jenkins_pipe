@@ -24,10 +24,10 @@ pipeline {
     }
     stage('TestAndPushDockerImage') {
       steps {
-        sh """
+        sh '''
           docker run -d --rm --name nginx-test -p 80:80 anpod07/nginx-test:latest
           docker ps --no-trunc
-          if [ $`curl -w '%{http_code}\n' --silent --output /dev/null localhost` -eq 200 ]
+          if [ `curl -w '%{http_code}\n' --silent --output /dev/null localhost` -eq 200 ]
            then
             echo 'HTTP HEALTH PASSED'
             docker push anpod07/nginx-test:latest
@@ -35,7 +35,7 @@ pipeline {
             echo 'HTTP HEALTH FAILED'
           fi
           docker stop nginx-test
-        """
+        '''
       }
     }
 //    stage('PushToDockerImage') {
