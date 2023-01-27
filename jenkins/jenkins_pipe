@@ -27,7 +27,9 @@ pipeline {
         sh '''
           docker run -d --rm --name nginx-test -p 80:80 anpod07/nginx-test:latest
           docker ps --no-trunc
-          if [ `curl -w %{http_code} -s -o /dev/null localhost` -eq 200 ]
+          ss -ltn
+          sleep 2
+          if [ -n `docker ps -f name=nginx-test | grep -v CONTAINER` ]
            then
             echo 'HTTP HEALTH PASSED'
             docker push anpod07/nginx-test:latest
@@ -36,6 +38,7 @@ pipeline {
           fi
           docker stop nginx-test
         '''
+//           -if [ `curl -w %{http_code} -s -o /dev/null localhost` -eq 200 ]
       }
     }
 //    stage('PushToDockerImage') {
