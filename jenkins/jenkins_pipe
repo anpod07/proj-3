@@ -27,7 +27,7 @@ pipeline {
         sh """
           docker run -d --rm --name nginx-test -p 80:80 anpod07/nginx-test:latest
           docker ps --no-trunc
-          http_health=$(curl -w '%{http_code}\n' --silent --output /dev/null localhost)
+          http_health=`curl -w '%{http_code}\n' --silent --output /dev/null localhost`
           if [ $http_health -eq 200 ]
            then
             echo 'HTTP HEALTH PASSED'
