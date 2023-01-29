@@ -12,8 +12,11 @@ pipeline {
   stages {
     stage('LoginToDockerHUB') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub_login', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-          sh "docker login -u $USERNAME -p $PASSWORD"
+        withCredentials([usernamePassword(
+          credentialsId: 'dockerhub_login', 
+          passwordVariable: 'PASSWORD', 
+          usernameVariable: 'USERNAME')]) {
+            sh "docker login -u $USERNAME -p $PASSWORD"
         }
       }
     }
@@ -37,14 +40,8 @@ pipeline {
           fi
           docker stop nginx-test
         '''
-//           -if [ `curl -w %{http_code} -s -o /dev/null localhost` -eq 200 ]
       }
     }
-//    stage('PushToDockerImage') {
-//      steps {
-//        sh 'docker push anpod07/nginx-test:latest'
-//      }
-//    }
   }
 }
 
