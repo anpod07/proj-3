@@ -1,6 +1,6 @@
 pipeline {
   agent {
-      label 'master'
+    label 'master'
   }
 
   options {
@@ -57,11 +57,11 @@ pipeline {
         '''
       }
     }
-    stage('CleanWorkspace') {
-      steps {
-        cleanWs()
-      }
-    }
+//    stage('CleanWorkspace') {
+//      steps {
+//        cleanWs()
+//      }
+//    }
   }
 }
 
