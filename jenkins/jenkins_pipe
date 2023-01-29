@@ -10,20 +10,20 @@ pipeline {
   }
 
   stages {
-    stage('CleanWorkspace') {
-      steps {
-        cleanWs()
-      }
-    }
-    stage('GetCodeFromGitHub') {
-      steps {
-        git branch: 'main', credentialsId: 'github-key', url: 'git@github.com:anpod07/proj-3.git'
-        sh '''
-          pwd
-          ls -la
-        '''
-      }
-    }
+//    stage('CleanWorkspace') {
+//      steps {
+//        cleanWs()
+//      }
+//    }
+//    stage('GetCodeFromGitHub') {
+//      steps {
+//        git branch: 'main', credentialsId: 'github-key', url: 'git@github.com:anpod07/proj-3.git'
+//        sh '''
+//          pwd
+//          ls -la
+//        '''
+//      }
+//    }
     stage('LoginToDockerHUB') {
       steps {
         withCredentials([usernamePassword(
@@ -57,11 +57,11 @@ pipeline {
         '''
       }
     }
-//    stage('CleanWorkspace') {
-//      steps {
-//        cleanWs()
-//      }
-//    }
+    stage('CleanWorkspace') {
+      steps {
+        cleanWs()
+      }
+    }
   }
 }
 
